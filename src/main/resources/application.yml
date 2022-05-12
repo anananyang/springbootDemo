@@ -1,33 +1,12 @@
-
 server:
     port: 8888
+    servlet:
+      context-path: /demo
 
 spring:
-    datasource:
-        # ???
-        name: test
-        url: jdbc:mysql://192.168.1.251:3306/yige_wholesale?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-        username: root
-        password: huigujia!15@09#09
-        driver-class-name: com.mysql.jdbc.Driver
+  datasource:
+    hikari:
 
-        # ???? ??????
-        type: com.alibaba.druid.pool.DruidDataSource
-        filters: stat
-        maxActive: 20
-        initialSize: 10
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
 
-#?? mybatis
-mybatis:
-    mapper-locations: classpath:mapper/*.xml
-    type-aliases-package: com.anyang.model
+
+debug: false
