@@ -2,7 +2,7 @@ package com.anyang.demo.domain.base;
 
 import lombok.Data;
 
-@Data
+
 public class BaseEntity {
     private Long id;
     private Long creator;

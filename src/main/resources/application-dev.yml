@@ -37,7 +37,17 @@ spring:
     hiddenmethod:
       filter:
         enabled: true   # restful 风格需要开启，因为表单只支持 post 和 get ，通过隐藏域intput(key = _method) 来决定最终的 httpMethod
+    contentnegotiation:
+      favor-parameter: false  # 内容协商
+#  web:
+#    resources:
+#      static-locations:
 
 
 mybatis:
   mapper-locations: "classpath: mapper/**/*.xml"
+my:
+  hello:
+    prefix: "hi"
+    suffix: "how are you?"
+

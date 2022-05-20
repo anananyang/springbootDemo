@@ -1,12 +1,16 @@
 server:
-    port: 8888
-    servlet:
-      context-path: /demo
+  port: 8888
+  servlet:
+    context-path: /demo
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: always
+    include-exception: true
 
 spring:
   datasource:
     hikari:
-
 
 
 debug: false

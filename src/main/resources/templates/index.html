@@ -1,0 +1,48 @@
+<html>
+    <head></head>
+    <body>
+        <p>欢迎光临</p>
+        <form action="/demo/hello/world" method="post">
+            <input value="POST SUBMIT" type="submit">
+        </form>
+
+        <form action="/demo/hello/world" method="get">
+            <input value="GET SUBMIT" type="submit">
+        </form>
+
+        <form action="/demo/hello/world" method="post">
+            <input name="_method" hidden value="delete">
+            <input value="DELETE SUBMIT" type="submit">
+        </form>
+
+        <form action="/demo/hello/world" method="post">
+            <input name="_method" hidden value="put">
+            <input value="PUT SUBMIT" type="submit">
+        </form>
+
+
+        <form action="/demo/user/add" method="post">
+            <input name="name" value="anyang">
+            <input name="nickName" value="anyang">
+            <input name="mobile" value="13611111111">
+            <input name="age" value="28">
+            <input value="SUBMIT" type="submit">
+        </form>
+
+        <form action="/demo/upload/imgs" method="post" enctype="multipart/form-data">
+            <input type="file" name="kenan">
+            <input type="file" name="myImg">
+            <input value="SUBMIT" type="submit">
+        </form>
+
+        <form action="/demo/upload/files" method="post" enctype="multipart/form-data">
+            <input name="name" value="anyang">
+            <input type="file" name="kenan">
+            <input type="file" name="myImg">
+            <input value="SUBMIT" type="submit">
+        </form>
+
+
+
+    </body>
+</html>

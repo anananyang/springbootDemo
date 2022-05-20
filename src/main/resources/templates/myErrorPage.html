@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+<div style="width: 100%; text-align: center; margin-top: 20px">
+    <h2 th:text="${status}"></h2>
+    <p th:text="${timestamp}"></p>
+    <p th:text="${path}"></p>
+</div>
+
+<div style="">
+    <!--<p th:utext="${message}"></p>-->
+    <div th:text="${#strings.replace(trace, '\n', '<br />')}"></div>
+</div>
+</body>
+</html>
