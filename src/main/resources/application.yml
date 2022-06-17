@@ -9,8 +9,8 @@ server:
     include-exception: true
 
 spring:
-  datasource:
-    hikari:
+  application:
+    name: spring-boot-demo
 
 
 debug: false

@@ -1,35 +1,36 @@
 spring:
-  datasource:
-    username: root
-    password: root
-    jdbc-url: jdbc:mysql://pdans.local:3306/test
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      connectionTimeout: 30000
-      minimumIdle: 8
-      maximumPoolSize: 64
-      connection-init-sql: set collation_connection=utf8mb4_general_ci
-      data-source-properties:
-        # Mysql 驱动对每个连接缓存的 prepared sql statements 的数量，推荐 250 - 500
-        prepStmtCacheSize: 250
-        #  Mysql 驱动将会缓存的 prepared sql statements 的最大长度，推荐设置 2048
-        prepStmtCacheSqlLimit: 2048
-        # 如果 cache 被禁止，prepStmtCacheSize、prepStmtCacheSqlLimit 不会生效，所以要开启
-        cachePrepStmts: true
-        useServerPrepStmts: true
-        useLocalSessionState: true
-        rewriteBatchedStatements: true
-        cacheResultSetMetadata: true
-        cacheServerConfiguration: true
-        elideSetAutoCommits: true
-        maintainTimeStats: true
-        serverTimezone: Asia/Shanghai
-        useUnicode: true
-        characterEncoding: utf-8
-        autoReconnect: true
-        allowMultiQueries: true
-        zeroDateTimeBehavior: convertToNull
-        useSSL: false
+#  datasource:
+#    hikari:
+#      username: root
+#      password: root
+#      jdbc-url: jdbc:mysql://pdans.local:3306/test
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      connectionTimeout: 30000
+#      minimumIdle: 8
+#      maximumPoolSize: 64
+#      connection-init-sql: "set collation_connection=utf8mb4_general_ci"
+#      data-source-properties:
+#        # Mysql 驱动对每个连接缓存的 prepared sql statements 的数量，推荐 250 - 500
+#        prepStmtCacheSize: 250
+#        #  Mysql 驱动将会缓存的 prepared sql statements 的最大长度，推荐设置 2048
+#        prepStmtCacheSqlLimit: 2048
+#        # 如果 cache 被禁止，prepStmtCacheSize、prepStmtCacheSqlLimit 不会生效，所以要开启
+#        cachePrepStmts: true
+#        useServerPrepStmts: true
+#        useLocalSessionState: true
+#        rewriteBatchedStatements: true
+#        cacheResultSetMetadata: true
+#        cacheServerConfiguration: true
+#        elideSetAutoCommits: true
+#        maintainTimeStats: true
+#        serverTimezone: Asia/Shanghai
+#        useUnicode: true
+#        characterEncoding: utf-8
+#        autoReconnect: true
+#        allowMultiQueries: true
+#        zeroDateTimeBehavior: convertToNull
+#        useSSL: false
+
   mvc:
     # 会影响 welcome page 和 favicon.ico 的访问，使用默认的 /** 则不会影响
     # 访问静态资源时要加上 /resources ，比如访问static 目录下的 kenan.jpg, 则使用 /resources/kenan.jpg
@@ -38,14 +39,13 @@ spring:
       filter:
         enabled: true   # restful 风格需要开启，因为表单只支持 post 和 get ，通过隐藏域intput(key = _method) 来决定最终的 httpMethod
     contentnegotiation:
-      favor-parameter: false  # 内容协商
+      favor-parameter: false # 内容协商
 #  web:
 #    resources:
 #      static-locations:
 
 
-mybatis:
-  mapper-locations: "classpath: mapper/**/*.xml"
+
 my:
   hello:
     prefix: "hi"

@@ -16,8 +16,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 
+
 @ServletComponentScan(basePackages = {"com.anyang.demo"})
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+//@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 public class MyBootApplication {
 
     public static void main(String[] args) {

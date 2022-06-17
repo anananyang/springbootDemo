@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.anyang.demo.dao.department.DepartmentDao">
+
+    <resultMap id = "BaseResultMap" type = "com.anyang.demo.domain.department.Department"
+               extends = "COMMON.BASE_RESULT_MAP">
+        <result column = "name" property = "name" />
+    </resultMap>
+
+    <resultMap id = "DepartmentView" type = "com.anyang.demo.view.department.DepartmentView">
+        <result column = "id" property = "id" />
+        <result column = "name" property = "name" />
+    </resultMap>
+
+    <resultMap id = "DepartmentViewV2" type = "com.anyang.demo.view.department.DepartmentView">
+        <result column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <collection property="employees"
+                    column="id"
+                    ofType="com.anyang.demo.view.user.UserView"
+        >
+            <id column = "user_id" property = "id" />
+            <result column = "user_name" property = "name" />
+            <result column = "nick_name" property = "nickName" />
+            <result column = "mobile" property = "mobile" />
+            <result column = "sex" property = "sex" />
+            <result column = "age" property = "age" />
+        </collection>
+    </resultMap>
+
+    <resultMap id = "DepartmentViewV3" type = "com.anyang.demo.view.department.DepartmentView">
+        <result column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <collection property="employees"
+                    column="id"
+                    select="com.anyang.demo.dao.user.UserDao.selectByDeptId"
+                    ofType="com.anyang.demo.view.user.UserView"
+                    fetchType="eager"
+        >
+        </collection>
+    </resultMap>
+
+    <sql id = "BaseWhereClause">
+        <where>
+            <trim prefixOverrides = "and">
+                <include refid = "COMMON.BASE_WHERE_CLAUSE" />
+                <if test = "name != null">
+                    and name = #{name}
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <sql id = "BaseUpdateSet">
+        <set>
+            <include refid = "COMMON.BASE_UPDATE_SET" />
+            <if test = "name != null">
+                name = #{name}
+            </if>
+        </set>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id = "selectCount" resultType = "java.lang.Integer">
+        select count(id)
+        from department
+        <include refid = "BaseWhereClause" />
+    </select>
+
+    <!-- 查询 -->
+    <select id = "select" resultMap = "BaseResultMap">
+        select
+        <include refid = "COMMON.ALL_COLUMN_LIST" />
+        from department
+        <include refid = "BaseWhereClause" />
+        <include refid = "COMMON.ORDER_BY" />
+        <include refid = "COMMON.LIMIT" />
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id = "selectById" resultMap = "BaseResultMap">
+        select
+        <include refid = "COMMON.ALL_COLUMN_LIST" />
+        from department
+        where id = #{id}
+    </select>
+
+    <!-- 根据IDS批量删除 -->
+    <update id = "deleteByIds">
+        update department
+        set is_deleted='Y'
+        where id in
+        (
+        <foreach collection = "array" index = "index" item = "tag" separator = ",">
+            #{tag}
+        </foreach>
+        )
+    </update>
+
+    <!-- 根据ID删除 -->
+    <update id = "deleteById">
+        update department
+        set is_deleted='Y'
+        where id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id = "delete">
+        update department
+        set is_deleted='Y'
+        <include refid = "BaseWhereClause" />
+    </delete>
+
+    <!-- 添加   -->
+    <insert id = "insert" useGeneratedKeys = "true" keyProperty = "id">
+        insert into department (
+        <include refid = "COMMON.BASE_INSERT_COLUMN" />
+        name
+        )
+        values (
+        <include refid = "COMMON.BASE_INSERT_VALUE" />
+        #{name}
+        )
+    </insert>
+
+    <!-- 通过ID更新 -->
+    <update id = "updateById">
+        update department
+        <include refid = "BaseUpdateSet" />
+        where id = #{id}
+    </update>
+
+    <select id="selectViewById" resultMap="DepartmentView">
+        select *
+        from department
+        where is_deleted = 'N'
+        and id = #{departmentId}
+    </select>
+
+
+    <select id="selectViewByIdV2" resultMap="DepartmentViewV2">
+        select
+          a.*,
+          b.id as user_id,
+          b.name as user_name,
+          b.nick_name,
+          b.sex,
+          b.age
+        from department a
+          inner join user b on a.id = b.dept_id and b.is_deleted = 'N'
+        where a.is_deleted = 'N'
+        and a.id = #{departmentId}
+    </select>
+
+    <select id="selectViewByIdV3" resultMap="DepartmentViewV3">
+        select *
+        from department
+        where is_deleted = 'N'
+        and id = #{departmentId}
+    </select>
+
+
+</mapper>

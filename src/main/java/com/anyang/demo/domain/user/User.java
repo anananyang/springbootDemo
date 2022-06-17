@@ -13,4 +13,5 @@ public class User extends BaseEntity {
     private String mobile;
     private String sex;
     private Integer age;
+    private Long deptId;
 }

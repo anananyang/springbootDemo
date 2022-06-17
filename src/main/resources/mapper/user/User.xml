@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace = "com.anyang.demo.dao.user.UserDao">
+
+    <resultMap id = "BaseResultMap" type = "com.anyang.demo.domain.user.User"
+               extends = "COMMON.BASE_RESULT_MAP">
+        <result column = "name" property = "name" />
+        <result column = "nick_name" property = "nickName" />
+        <result column = "mobile" property = "mobile" />
+        <result column = "sex" property = "sex" />
+        <result column = "age" property = "age" />
+        <result column = "dept_id" property = "deptId" />
+    </resultMap>
+
+    <resultMap id = "UserView" type = "com.anyang.demo.view.user.UserView">
+        <id column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <result column = "nick_name" property = "nickName" />
+        <result column = "mobile" property = "mobile" />
+        <result column = "sex" property = "sex" />
+        <result column = "age" property = "age" />
+        <association property="department"
+                     column="dept_id"
+                     javaType="com.anyang.demo.view.department.DepartmentView">
+            <id column = "department_id" property = "id" />
+            <id column = "department_name" property = "name" />
+        </association>
+    </resultMap>
+
+
+    <resultMap id = "UserViewV3" type = "com.anyang.demo.view.user.UserView">
+        <id column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <result column = "nick_name" property = "nickName" />
+        <result column = "mobile" property = "mobile" />
+        <result column = "sex" property = "sex" />
+        <result column = "age" property = "age" />
+        <association property="department"
+                     column="dept_id"
+                     resultMap="DepartmentView">
+        </association>
+    </resultMap>
+
+
+    <resultMap id = "DepartmentView" type = "com.anyang.demo.view.department.DepartmentView">
+        <id column = "department_id" property = "id" />
+        <id column = "department_name" property = "name" />
+    </resultMap>
+
+
+    <resultMap id = "UserViewV2" type = "com.anyang.demo.view.user.UserView">
+        <id column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <result column = "nick_name" property = "nickName" />
+        <result column = "mobile" property = "mobile" />
+        <result column = "sex" property = "sex" />
+        <result column = "age" property = "age" />
+        <result column = "dept_id" property = "deptId" />
+        <association property="department"
+                     column="dept_id"
+                     javaType="com.anyang.demo.view.department.DepartmentView"
+                     select="com.anyang.demo.dao.department.DepartmentDao.selectViewById"
+                     fetchType="lazy"
+        >
+        </association>
+    </resultMap>
+
+
+    <resultMap id = "UserViewV4" type = "com.anyang.demo.view.user.UserView">
+        <id column = "id" property = "id" />
+        <result column = "name" property = "name" />
+        <result column = "nick_name" property = "nickName" />
+        <result column = "mobile" property = "mobile" />
+        <result column = "sex" property = "sex" />
+        <result column = "age" property = "age" />
+    </resultMap>
+
+
+    <sql id = "BaseWhereClause">
+        <where>
+            <trim prefixOverrides = "and">
+                <include refid = "COMMON.BASE_WHERE_CLAUSE" />
+                <if test = "name != null">
+                    and name = #{name}
+                </if>
+                <if test = "nickName != null">
+                    and nick_name = #{nickName}
+                </if>
+                <if test = "mobile != null">
+                    and mobile = #{mobile}
+                </if>
+                <if test = "sex != null">
+                    and sex = #{sex}
+                </if>
+                <if test = "age != null">
+                    and age = #{age}
+                </if>
+            </trim>
+        </where>
+    </sql>
+
+    <sql id = "BaseUpdateSet">
+        <set>
+            <include refid = "COMMON.BASE_UPDATE_SET" />
+            <if test = "name != null">
+                name = #{name},
+            </if>
+            <if test = "nickName != null">
+                nick_name = #{nickName},
+            </if>
+            <if test = "mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test = "sex != null">
+                sex = #{sex},
+            </if>
+            <if test = "age != null">
+                age = #{age}
+            </if>
+        </set>
+    </sql>
+
+    <!-- 查询总数 -->
+    <select id = "selectCount" resultType = "java.lang.Integer">
+        select count(id)
+        from user
+        <include refid = "BaseWhereClause" />
+    </select>
+
+    <!-- 查询 -->
+    <select id = "select" resultMap = "BaseResultMap">
+        select
+        <include refid = "COMMON.ALL_COLUMN_LIST" />
+        from user
+        <include refid = "BaseWhereClause" />
+        <include refid = "COMMON.ORDER_BY" />
+        <include refid = "COMMON.LIMIT" />
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id = "selectById" resultMap = "BaseResultMap">
+        select
+        <include refid = "COMMON.ALL_COLUMN_LIST" />
+        from user
+        where id = #{id}
+        and is_deleted = 'N'
+    </select>
+
+    <!-- 根据IDS批量删除 -->
+    <update id = "deleteByIds">
+        update user
+        set is_deleted='Y'
+        where id in
+        (
+        <foreach collection = "array" index = "index" item = "tag" separator = ",">
+            #{tag}
+        </foreach>
+        )
+    </update>
+
+    <!-- 根据ID删除 -->
+    <update id = "deleteById">
+        update user
+        set is_deleted='Y'
+        where id=#{id}
+    </update>
+
+    <!-- 删除 -->
+    <delete id = "delete">
+        update user
+        set is_deleted='Y'
+        <include refid = "BaseWhereClause" />
+    </delete>
+
+    <!-- 添加   -->
+    <insert id = "insert" useGeneratedKeys = "true" keyProperty = "id">
+        insert into user (
+        <include refid = "COMMON.BASE_INSERT_COLUMN" />
+        name,
+        nick_name,
+        mobile,
+        sex,
+        age
+        )
+        values (
+        <include refid = "COMMON.BASE_INSERT_VALUE" />
+        #{name},
+        #{nickName},
+        #{mobile},
+        #{sex},
+        #{age}
+        )
+    </insert>
+
+    <!-- 通过ID更新 -->
+    <update id = "updateById">
+        update user
+        <include refid = "BaseUpdateSet" />
+        where id = #{id}
+    </update>
+
+    <select id="selectByUserNameAndMobile" resultType="User">
+        select *
+        from user
+        where is_deleted = 'N'
+        <!--and `name` = #{userName}-->
+        and mobile = #{mobile}
+         and `name` = '${userName}'
+    </select>
+
+    <select id="selectAllUser" resultType="user">
+        select *
+        from user
+        where is_deleted = 'N'
+    </select>
+
+    <select id="selectViewById" resultMap="UserViewV3">
+        select
+          a.*,
+          b.id as department_id,
+          b.name as department_name
+        from user a
+          inner join department b on a.dept_id = b.id and b.is_deleted = 'N'
+        where a.is_deleted = 'N'
+        and a.id = #{userId}
+    </select>
+
+    <select id="selectViewByIdV2" resultMap="UserViewV2">
+        select *
+        from user
+        where is_deleted = 'N'
+        and id = #{userId}
+    </select>
+
+    <select id="selectByDeptId" resultMap="UserViewV4">
+        select *
+        from user
+        where is_deleted = 'N'
+        and dept_id = #{deptId}
+    </select>
+
+</mapper>
